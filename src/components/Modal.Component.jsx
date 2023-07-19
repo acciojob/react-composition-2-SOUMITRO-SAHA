@@ -20,7 +20,7 @@ const Modal = ({ show, onClose }) => {
 
 	const modal = (
 		<div className='model-overlay' ref={modalRef}>
-			<button className='model-close btn' onClick={() => onClose(false)}>
+			<button className='model-close' onClick={() => onClose(false)}>
 				Close
 			</button>
 
@@ -28,12 +28,12 @@ const Modal = ({ show, onClose }) => {
 		</div>
 	);
 	return (
-		<div>
+		<>
 			<button className='btn' onClick={() => onClose(true)}>
 				Show Modal
 			</button>
 			{show && modal}
-		</div>
+		</>
 	);
 };
 
