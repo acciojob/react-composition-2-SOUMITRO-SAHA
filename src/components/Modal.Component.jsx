@@ -1,15 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef } from "react";
 import "./modal.css";
 
-const Modal = () => {
-	const [btnClicked, setBtnClicked] = useState(false);
+const Modal = ({ show, onClose }) => {
+	const modalRef = useRef();
+	useEffect(() => {
+		const outSideClickHandler = (e) => {
+			if (modalRef.current && !modalRef.current.contains(e.target)) {
+				onClose(false);
+			}
+		};
+		if (show) {
+			document.addEventListener("click", outSideClickHandler);
+		}
+
+		return () => {
+			document.removeEventListener("click", outSideClickHandler);
+		};
+	}, [show]);
+
 	const modal = (
-		<div className='model-overlay'>
-			<button
-				className='model-close btn'
-				onClick={() => setBtnClicked(!btnClicked)}
-			>
-				{" "}
+		<div className='model-overlay' ref={modalRef}>
+			<button className='model-close btn' onClick={() => onClose(false)}>
 				Close
 			</button>
 
@@ -18,10 +29,10 @@ const Modal = () => {
 	);
 	return (
 		<div>
-			<button className='btn' onClick={() => setBtnClicked(!btnClicked)}>
+			<button className='btn' onClick={() => onClose(true)}>
 				Show Modal
 			</button>
-			{btnClicked && modal}
+			{show && modal}
 		</div>
 	);
 };
